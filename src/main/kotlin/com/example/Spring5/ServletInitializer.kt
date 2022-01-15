@@ -1,8 +1,15 @@
 package com.example.Spring5
 
+import com.googlecode.objectify.ObjectifyFilter
+import com.googlecode.objectify.ObjectifyService
 import org.springframework.boot.builder.SpringApplicationBuilder
+import org.springframework.boot.web.servlet.FilterRegistrationBean
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import javax.servlet.ServletContextEvent
+import javax.servlet.ServletContextListener
 
 @Configuration
 class ServletInitializer : SpringBootServletInitializer() {
@@ -11,4 +18,32 @@ class ServletInitializer : SpringBootServletInitializer() {
 		return application.sources(Spring5Application::class.java)
 	}
 
+	@Bean
+	fun objectifyFilter(): FilterRegistrationBean<ObjectifyFilter> {
+		val reg = FilterRegistrationBean<ObjectifyFilter>()
+		reg.filter = ObjectifyFilter()
+		reg.addUrlPatterns("/*")
+		reg.setName("ofyFilter")
+		return reg
+	}
+
+	@Bean
+	fun objectifyListener(): ServletListenerRegistrationBean<ObjectifyListener> {
+		val reg = ServletListenerRegistrationBean<ObjectifyListener>()
+		reg.listener = ObjectifyListener()
+		return reg
+	}
+
 }
+
+class ObjectifyListener: ServletContextListener {
+	override fun contextInitialized(sce: ServletContextEvent) {
+		ObjectifyService.init()
+	}
+}
+
+
+
+//	Alternatively for Filtering
+//	@WebFilter(urlPatterns = {"/*"})
+//	public class ObjectifyWebFilter extends ObjectifyFilter {}

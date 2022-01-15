@@ -1,5 +1,6 @@
 package com.example.Spring5
 
+import com.googlecode.objectify.ObjectifyService
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.web.bind.annotation.GetMapping
@@ -22,4 +23,3 @@ class HelloController {
 	}
 
 }
-
