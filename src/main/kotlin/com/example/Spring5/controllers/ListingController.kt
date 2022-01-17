@@ -9,7 +9,10 @@ class ListingController(
     val listingService: ListingService
 ) {
     @GetMapping
-    fun get(): ListingsResponse = ListingsResponse(listingService.getListings())
+    fun get(): ListingsFiniteResponse {
+        ListingsFiniteResponse.Error("Error!")
+        return ListingsFiniteResponse.Success(listingService.getListings())
+    }
 
     // Hierarchy doesnt matter i.e. /{id} vs /save
     @GetMapping("/{id}")
@@ -33,6 +36,20 @@ class ListingController(
 data class ListingsResponse(
     val listings: List<String>
 )
+
+sealed class ListingsFiniteResponse {
+
+    data class Success(
+        val listings: List<String>
+    ): ListingsFiniteResponse()
+
+    data class Error(
+        val reason: String
+    ): ListingsFiniteResponse()
+
+    object NoResponse: ListingsFiniteResponse()
+
+}
 
 data class ListingPutBody(
     val name: String
