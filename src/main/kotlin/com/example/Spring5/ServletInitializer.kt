@@ -1,6 +1,7 @@
 package com.example.Spring5
 
 import com.example.Spring5.controllers.ObjectifyEntity1
+import com.example.Spring5.entitys.ListerEntity
 import com.example.Spring5.entitys.ListingEntity
 import com.googlecode.objectify.ObjectifyFilter
 import com.googlecode.objectify.ObjectifyService
@@ -43,6 +44,7 @@ class ObjectifyListener: ServletContextListener {
 		ObjectifyService.init()
 		ObjectifyService.register(ObjectifyEntity1::class.java)
 		ObjectifyService.register(ListingEntity::class.java)
+		ObjectifyService.register(ListerEntity::class.java)
 	}
 }
 

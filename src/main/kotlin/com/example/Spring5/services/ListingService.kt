@@ -1,8 +1,10 @@
 package com.example.Spring5.services
 
+import com.example.Spring5.entitys.ListerEntity
 import com.example.Spring5.entitys.ListingEntity
 import com.googlecode.objectify.Key
 import com.googlecode.objectify.ObjectifyService.ofy
+import com.googlecode.objectify.Ref
 import com.googlecode.objectify.cmd.Query
 import org.springframework.stereotype.Service
 
@@ -36,9 +38,11 @@ class ListingService {
     }
 
     fun putListing(name: String): String {
+        val lister = ofy().save().entity(ListerEntity("DEFAULT_NAME")).now()
         val listing = ListingEntity(
             Math.random().toRawBits().toString(),
             name,
+            Ref.create(ListerEntity("DEFAULT_NAME"))
         )
         ofy().save().entity(listing).now()
         return name
