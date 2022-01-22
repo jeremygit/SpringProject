@@ -1,5 +1,6 @@
 package com.example.Spring5.controllers
 
+import com.example.Spring5.entitys.ListingEntity
 import com.example.Spring5.services.ListingService
 import org.springframework.web.bind.annotation.*
 
@@ -14,10 +15,36 @@ class ListingController(
         return ListingsFiniteResponse.Success(listingService.getListings())
     }
 
+    @GetMapping("/latest")
+    fun getLatest(): ListingsFiniteResponse {
+        return ListingsFiniteResponse.Success(listOf(listingService.getLatest()))
+    }
+
+    @GetMapping("/ents")
+    fun getEntities(): ListingsFiniteResponse {
+        return try {
+            ListingsFiniteResponse.Success(listingService.getLisitingsEntitys())
+        } catch (e: Exception) {
+            ListingsFiniteResponse.Error("Error!")
+        }
+    }
+
+    @GetMapping("/ent")
+    fun getEntity(
+        @RequestParam id: String
+    ): ListingsFiniteResponse {
+        return ListingsFiniteResponse.Success(listOf(listingService.getListingEntity(id)))
+//        return try {
+//            ListingsFiniteResponse.Success(listOf(listingService.getListingEntity()))
+//        } catch (e: Exception) {
+//            ListingsFiniteResponse.Error("Error!")
+//        }
+    }
+
     // Hierarchy doesnt matter i.e. /{id} vs /save
     @GetMapping("/{id}")
     fun getListing(
-        @PathVariable id:String
+        @PathVariable id: String
     ): String {
         val listing = listingService.getListing()
         return "$id $listing"
@@ -40,8 +67,11 @@ data class ListingsResponse(
 sealed class ListingsFiniteResponse {
 
     data class Success(
-        val listings: List<String>
-    ): ListingsFiniteResponse()
+        val listings: List<String>? = null,
+        val listingsEntitys: List<ListingEntity>? = null,
+    ): ListingsFiniteResponse() {
+        constructor(listingsEntitys: List<ListingEntity>): this(null, listingsEntitys)
+    }
 
     data class Error(
         val reason: String
