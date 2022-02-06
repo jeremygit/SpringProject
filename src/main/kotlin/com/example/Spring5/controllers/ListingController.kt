@@ -159,3 +159,13 @@ data class ListingPutBody(
 //data class ListingPutBody(
 //    val name: String
 //)
+
+// vararg with * i.e. vararg jobs = *jobs.toTypedArray()
+
+// class TaskQueue(gsonBuilder: GsonBuilder) : JobQueue, ApplicationContextAware {
+
+//import com.google.appengine.api.taskqueue.Queue
+//import com.google.appengine.api.taskqueue.QueueFactory
+//import com.google.appengine.api.taskqueue.TaskOptions
+//TaskOptions.Builder
+//.withMethod(method)
